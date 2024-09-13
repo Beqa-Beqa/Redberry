@@ -1,0 +1,44 @@
+.custom-select:hover {
+  background-color: var(--button-hover-secondary) !important;
+}
+
+.dropdown-button {
+  color: var(--text-bold);
+}
+
+.arrow-up {
+  transform: rotate(180deg);
+}
+
+.toggle-menu {
+  border: 1px solid var(--border-thin-color);
+  z-index: 99;
+}
+
+.check-button {
+  color: var(--text-bold);
+  font-size: 17px;
+  width: 200px;
+}
+
+.check-button input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--success);
+}
+
+.filter-input-container input {
+  border: 1px solid #808A93;
+  width: 160px;
+  height: 42px;
+  font-size: 17px;
+}
+
+.select-button {
+  border: 1px solid #808A93;
+}
+
+.select-button span {
+  color: #808A93;
+  opacity: 0.4;
+}

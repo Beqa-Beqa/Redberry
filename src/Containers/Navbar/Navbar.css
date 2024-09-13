@@ -1,0 +1,4 @@
+.rb-navbar {
+  height: 100px;
+  border-bottom: 2px solid var(--border-thin-color);
+}
