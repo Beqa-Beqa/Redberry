@@ -58,6 +58,7 @@ table {
 	--button-hover-secondary: #F3F3F3;
 	--contrast-color: #FFFFFF;
 	--success: #45A849;
+	--error: #F93B1D;
 }
 
 sup {
@@ -89,4 +90,16 @@ sup {
 
 .text-contrast { 
 	color: var(--contrast-color);
+}
+
+.text-error {
+	color: var(--error) !important;
+}
+
+.text-success {
+	color: var(--success) !important;
+}
+
+.border-error {
+	border: 1px solid var(--error) !important;
 }

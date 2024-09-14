@@ -1,8 +1,8 @@
-export const regions = [
+export const regionsData = [
   ["ქართლი", "კახეთი", "იმერეთი", "სამეგრელო"],
   ["გურია", "რაჭა", "ლეჩხუმი", "სამცხე-ჯავახეთი"],
   ["აჭარა", "სვანეთი", "მცხეთა-მთიანეთი", "თბილისი"]
 ];
-export const prices = [50000, 100000, 150000, 200000, 250000, 300000];
-export const areas = [50, 100, 150, 200, 250, 300];
-export const roomsQuantity = [1, 2, 3, 4, 5];
+export const pricesData = [50000, 100000, 150000, 200000, 250000, 300000];
+export const areasData = [50, 100, 150, 200, 250, 300];
+export const roomsQuantityData = [1, 2, 3, 4, 5];
