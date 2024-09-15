@@ -26,8 +26,8 @@ const DropdownContainer = (props: {
   }
 
   const isRegionFilter = regions.length;
-  const isPriceRangeFilter = (priceRange.start > 0 && priceRange.start !== null) || (priceRange.end !== Infinity && priceRange.end !== null);
-  const isAreaRangeFilter = (areaRange.start > 0 && areaRange.start !== null) || (areaRange.end !== Infinity && priceRange.end !== null);
+  const isPriceRangeFilter = priceRange.start || (priceRange.end && priceRange.end !== Infinity);
+  const isAreaRangeFilter = areaRange.start || (areaRange.end && areaRange.end !== Infinity);
   const isRoomsQuantityFilter = roomsQuantity > 0 && roomsQuantity !== null;
 
   return (

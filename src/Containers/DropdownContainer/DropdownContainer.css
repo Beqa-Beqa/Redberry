@@ -1,8 +1,9 @@
 .dropdown-container {
   border: 1px solid var(--border-thin-color);
+  text-wrap: nowrap;
 }
 
 .dropdown-container,
 .dropdown-container ~ div {
-  max-width: 793px;
+  max-width: 810px;
 }

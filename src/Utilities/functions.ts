@@ -22,20 +22,50 @@ export const deriveNumTag = (num: number, flag?: string, separator?: string) => 
  * @returns Data returned form request
  * 
  */
-export const makeRequest = async (method: "GET" | "POST" | "DELETE", endpoint: string, withKey: boolean = false, body?: any) => {
-  const options: RequestInit = {
-    method,
-    mode: "cors",
-    cache: "no-cache",
-    headers: new Headers({
-      "Content-Type": "application/json"
-    })
+export const makeRequest = async (method: "GET" | "POST" | "DELETE", endpoint: string, withKey: boolean = false, contentType?: string, body?: any) => {
+  try {
+    const options: RequestInit = {
+      method,
+      mode: "cors",
+      cache: "no-cache",
+      headers: new Headers({
+        "Content-Type": contentType ? contentType : "application/json"
+      })
+    }
+    
+    if(body) options.body = JSON.stringify(body);
+    if(withKey) (options.headers as Headers).append("Authorization", `Bearer ${key}`);
+
+    const response = await fetch(`${baseUrl}/${endpoint}`, options);
+
+    return await response.json();
+  } catch (err) {
+    console.log(err);
   }
+}
 
-  if(body) options.body = JSON.stringify(body);
-  if(withKey) (options.headers as Headers).append("Authorization", `Bearer ${key}`);
 
-  const response = await fetch(`${baseUrl}/${endpoint}`, options);
+/**
+ * 
+ * @param setState page state setter
+ * @param value page
+ */
+export const changePage = (setState: React.Dispatch<React.SetStateAction<Page>>, value: Page) => {
+  setState(value);
+  sessionStorage.setItem("currentPage", value);
+}
 
-  return await response.json();
+
+/**
+ * 
+ * @param file File to convert to binary string ( base 64 )
+ * @returns Promise that either resolves to base 64 string or rejects with error
+ */
+export const imageToBase64 = (file: File) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);  // Converts the image to base64
+    reader.onload = () => resolve(reader.result as string); // Resolve with base64 string
+    reader.onerror = error => reject(error); // Reject in case of an error
+  });
 }

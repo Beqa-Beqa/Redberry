@@ -34,6 +34,10 @@
   font-size: 17px;
 }
 
+.filter-input-field {
+  outline: none;
+}
+
 .select-button {
   border: 1px solid #808A93;
 }

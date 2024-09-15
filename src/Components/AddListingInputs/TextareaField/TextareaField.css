@@ -1,0 +1,7 @@
+.custom-textarea-input textarea {
+  border: 1px solid #808A93;
+  resize: none;
+  outline: none;
+  height: 160px;
+  font-size: 17px;
+}

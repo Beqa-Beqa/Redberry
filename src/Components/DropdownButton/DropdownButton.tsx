@@ -101,7 +101,7 @@ const DropdownButton = (props: {
                       <input 
                         value={priceRange.start > 0 && priceRange.start !== null ? priceRange.start : ""}
                         onChange={(e) => handlePriceOrAreaInputValueChange(e, "start", setPriceRange, "price",setIsError)}
-                        className={`${isError ? "border-error" : ""} rounded px-2`} 
+                        className={`${isError ? "border-error" : ""} rounded px-2 filter-input-field`} 
                         placeholder="დან" 
                         type="text" 
                       />
@@ -115,7 +115,7 @@ const DropdownButton = (props: {
                       <input 
                         value={priceRange.end !== Infinity && priceRange.end !== null ? priceRange.end : ""}
                         onChange={(e) => handlePriceOrAreaInputValueChange(e, "end", setPriceRange, "price", setIsError)}
-                        className={`${isError ? "border-error" : ""} rounded px-2`}
+                        className={`${isError ? "border-error" : ""} rounded px-2 filter-input-field`}
                         placeholder="მდე" 
                         type="text" 
                       />
@@ -184,7 +184,7 @@ const DropdownButton = (props: {
                       <input 
                         value={areaRange.start > 0 && areaRange.start !== null ? areaRange.start : ""}
                         onChange={(e) => handlePriceOrAreaInputValueChange(e, "start", setAreaRange, "area", setIsError)}
-                        className={`${isError ? "border-error" : ""} rounded px-2`} 
+                        className={`${isError ? "border-error" : ""} rounded px-2 filter-input-field`} 
                         placeholder="დან" 
                         type="text" 
                       />
@@ -194,7 +194,7 @@ const DropdownButton = (props: {
                       <input 
                         value={areaRange.end !== Infinity && areaRange.end !== null ? areaRange.end : ""} 
                         onChange={(e) => handlePriceOrAreaInputValueChange(e, "end", setAreaRange, "area", setIsError)}
-                        className={`${isError ? "border-error" : ""} rounded px-2`} 
+                        className={`${isError ? "border-error" : ""} rounded px-2 filter-input-field`} 
                         placeholder="მდე" 
                         type="text" 
                       />

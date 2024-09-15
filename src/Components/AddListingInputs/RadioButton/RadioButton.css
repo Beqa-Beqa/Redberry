@@ -1,0 +1,5 @@
+.custom-radio-button {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--text-bold);
+}

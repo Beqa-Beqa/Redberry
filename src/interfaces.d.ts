@@ -55,8 +55,23 @@ declare interface Region {
   name: string
 }
 
+declare interface City {
+  id: number,
+  name: string,
+  region_id: number,
+  region: Region
+}
+
+declare interface Agent {
+  id: number,
+  name: string,
+  surname: string,
+  avatar: string
+}
+
 declare interface GlobalContext {
-  regionsArray: Region[]
+  regionsArray: Region[],
+  citiesArray: City[]
 }
 
 declare interface PropertyCard {
@@ -73,12 +88,19 @@ declare interface RealEstatePostRequestBody {
   address: string,
   region_id: number,
   description: string,
-  city_id: string,
+  city_id: number,
   zip_code: string,
   price: number,
   area: number,
   bedrooms: number,
   is_rental: 0 | 1,
-  agent_id: number,
+  agent_id?: number,
   image: any
 }
+
+declare interface PageContext {
+  currentPage: Page,
+  setCurrentPage: React.Dispatch<React.SetStateAction<Page>>
+}
+
+declare type Page = "" | "add-listing-page";

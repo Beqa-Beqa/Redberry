@@ -106,12 +106,20 @@ sup {
 	color: var(--success) !important;
 }
 
+.text-dark {
+	color: var(--text-bold);
+}
+
 .border-error {
 	border: 1px solid var(--error) !important;
 }
 
 .border-thin {
 	border: 1px solid var(--border-thin-color);
+}
+
+.border-bold {
+	border: 1px solid var(--text-bold)
 }
 
 .text-placeholder {
