@@ -55,6 +55,7 @@ table {
 	--background: #FFF;
 	--border-thin-color: #DBDBDB;
 	--text-bold: #021526;
+	--text-opaque: #02152680;
 	--button-hover-secondary: #F3F3F3;
 	--contrast-color: #FFFFFF;
 	--success: #45A849;
@@ -88,6 +89,11 @@ sup {
 	color: var(--primary) !important;
 }
 
+.btn-primary-outline:hover {
+	background-color: var(--primary) !important;
+	color: var(--contrast-color) !important;
+}
+
 .text-contrast { 
 	color: var(--contrast-color);
 }
@@ -102,4 +108,17 @@ sup {
 
 .border-error {
 	border: 1px solid var(--error) !important;
+}
+
+.border-thin {
+	border: 1px solid var(--border-thin-color);
+}
+
+.text-placeholder {
+	color: var(--text-bold);
+	opacity: 0.8;
+}
+
+.text-opaque {
+	color: var(--text-opaque);
 }

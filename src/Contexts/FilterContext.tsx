@@ -12,11 +12,17 @@ export const FilterContext = createContext<PropertyFiltersContext>({
 });
 
 const FilterContextProvider = (props: { children: React.ReactNode }) => {
+  // Filter saved in sessionStorage
+  const regionsFilter = JSON.parse(sessionStorage.getItem("regionsFilter") || "[]");
+  const pricesFilter = JSON.parse(sessionStorage.getItem("pricesFilter") || "{}");
+  const areasFilter = JSON.parse(sessionStorage.getItem("areasFilter") || "{}");
+  const roomsQuantityFilter = parseInt(sessionStorage.getItem("roomsQuantityFilter") || "0");
+
   // Filter value states
-  const [regions, setRegions] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<{ start: number, end: number }>({ start: 0, end: Infinity });
-  const [areaRange, setAreaRange] = useState<{ start: number, end: number }>({ start: 0, end: Infinity });
-  const [roomsQuantity, setRoomsQuantity] = useState<number>(0);
+  const [regions, setRegions] = useState<string[]>(regionsFilter);
+  const [priceRange, setPriceRange] = useState<{ start: number, end: number }>(pricesFilter);
+  const [areaRange, setAreaRange] = useState<{ start: number, end: number }>(areasFilter);
+  const [roomsQuantity, setRoomsQuantity] = useState<number>(roomsQuantityFilter);
 
   return (
     <FilterContext.Provider 

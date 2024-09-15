@@ -1,10 +1,12 @@
 import "./DropdownButton.css";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import { regionsData, pricesData, areasData, roomsQuantityData } from "../../Data";
+import { pricesData, areasData, roomsQuantityData } from "../../Data";
 import { deriveNumTag } from "../../Utilities/functions";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { FilterContext } from "../../Contexts/FilterContext";
-import { handlePriceOrAreaInputValueChange, handlePriceOrAreaSelect, handleRegionSelect } from "../../Utilities/filterFunctions";
+import { handlePriceOrAreaInputValueChange, handlePriceOrAreaSelect, handleRegionSelect, handleRoomsQuantitySelect } from "../../Utilities/filterFunctions";
+import { useOutsideClick } from "../../Hooks";
+import { GeneralContext } from "../../Contexts/GeneralContext";
 
 const DropdownButton = (props: {
   menuVisible: boolean,
@@ -18,7 +20,27 @@ const DropdownButton = (props: {
   const { placeholder, groupName, menuVisible, setMenuVisible, isError, setIsError } = props;
 
   // FilterContext states for filter updates
-  const {regions, setRegions, priceRange, setPriceRange, areaRange, setAreaRange, setRoomsQuantity } = useContext(FilterContext);
+  const { regions, setRegions, priceRange, setPriceRange, areaRange, setAreaRange, roomsQuantity, setRoomsQuantity } = useContext(FilterContext);
+  const { regionsArray } = useContext(GeneralContext);
+  const regionsData: Region[][] = (() => {
+    let tempArray: Region[] = [];
+    return regionsArray.reduce((dataArray: Region[][], region: Region, index: number) => {
+      tempArray.push(region);
+
+      if((index + 1) % 4 === 0) {
+        dataArray.push(tempArray);
+        tempArray = [];
+      }
+
+      return dataArray;
+    }, [])
+  })();
+
+  // Reference to dropdown menu
+  const menuRef = useRef(null);
+
+  // Close menu on outside click
+  useOutsideClick(menuRef, () => setMenuVisible("none"));
 
   return ( 
     <div className="fw-bold bg-transparent px-2 py-1 position-relative">
@@ -31,7 +53,7 @@ const DropdownButton = (props: {
 
       {
         menuVisible ?
-          <div className="position-absolute start-0 toggle-menu rounded mt-3">
+          <div ref={menuRef} className="position-absolute start-0 toggle-menu border-thin rounded mt-3">
             {
               groupName === "region" ?
               <div className="p-3 mt-3">
@@ -40,21 +62,20 @@ const DropdownButton = (props: {
                 {
                   regionsData.map((regionQuarter, index) => {
                     return ( 
-                      <div key={regionQuarter.length + index} className="d-flex flex-column gap-2">
+                      <div key={index} className="d-flex flex-column gap-2">
                         {
                           regionQuarter.map((region) => {
                             return (
-                              <label className="check-button fw-normal d-flex align-items-center">
+                              <label key={region.id} className="check-button fw-normal d-flex align-items-center">
                                 <input
-                                  checked={regions.includes(region)}
-                                  onChange={() => handleRegionSelect(setRegions, region)} 
+                                  checked={regions.includes(region.name)}
+                                  onChange={() => handleRegionSelect(setRegions, region.name)} 
                                   className="me-2" 
                                   type="checkbox" 
                                   name={groupName} 
-                                  key={region} 
-                                  value={region} 
+                                  value={region.name} 
                                 />
-                                {region}
+                                {region.name}
                               </label>
                             );
                           })
@@ -78,8 +99,8 @@ const DropdownButton = (props: {
 
 
                       <input 
-                        value={priceRange.start > 0 ? priceRange.start : ""}
-                        onChange={(e) => handlePriceOrAreaInputValueChange(e, "start", setPriceRange, setIsError)}
+                        value={priceRange.start > 0 && priceRange.start !== null ? priceRange.start : ""}
+                        onChange={(e) => handlePriceOrAreaInputValueChange(e, "start", setPriceRange, "price",setIsError)}
                         className={`${isError ? "border-error" : ""} rounded px-2`} 
                         placeholder="დან" 
                         type="text" 
@@ -92,8 +113,8 @@ const DropdownButton = (props: {
                     <div className="filter-input-container position-relative d-flex align-items-center">
 
                       <input 
-                        value={priceRange.end !== Infinity ? priceRange.end : ""}
-                        onChange={(e) => handlePriceOrAreaInputValueChange(e, "end", setPriceRange, setIsError)}
+                        value={priceRange.end !== Infinity && priceRange.end !== null ? priceRange.end : ""}
+                        onChange={(e) => handlePriceOrAreaInputValueChange(e, "end", setPriceRange, "price", setIsError)}
                         className={`${isError ? "border-error" : ""} rounded px-2`}
                         placeholder="მდე" 
                         type="text" 
@@ -121,7 +142,7 @@ const DropdownButton = (props: {
                         pricesData.map((price: number) => <button 
                           key={price} 
                           value={price}
-                          onClick={() => handlePriceOrAreaSelect(setPriceRange, { start: price })}
+                          onClick={() => handlePriceOrAreaSelect(setPriceRange, { start: price }, "price")}
                           className="d-block bg-transparent border-0 fw-normal mt-2">
                             {deriveNumTag(price, "₾")}
                           </button>
@@ -138,7 +159,7 @@ const DropdownButton = (props: {
                         pricesData.map((price: number) => <button 
                           key={price} 
                           value={price}
-                          onClick={() => handlePriceOrAreaSelect(setPriceRange, { end: price })}
+                          onClick={() => handlePriceOrAreaSelect(setPriceRange, { end: price }, "price")}
                           className="d-block bg-transparent border-0 fw-normal mt-2">
                             {deriveNumTag(price, "₾")}
                           </button>
@@ -161,8 +182,8 @@ const DropdownButton = (props: {
                   <div className="d-flex gap-3">
                     <div className="filter-input-container position-relative d-flex align-items-center">
                       <input 
-                        value={areaRange.start > 0 ? areaRange.start : ""}
-                        onChange={(e) => handlePriceOrAreaInputValueChange(e, "start", setAreaRange, setIsError)}
+                        value={areaRange.start > 0 && areaRange.start !== null ? areaRange.start : ""}
+                        onChange={(e) => handlePriceOrAreaInputValueChange(e, "start", setAreaRange, "area", setIsError)}
                         className={`${isError ? "border-error" : ""} rounded px-2`} 
                         placeholder="დან" 
                         type="text" 
@@ -171,8 +192,8 @@ const DropdownButton = (props: {
                     </div>
                     <div className="filter-input-container position-relative d-flex align-items-center">
                       <input 
-                        value={areaRange.end !== Infinity ? areaRange.end : ""} 
-                        onChange={(e) => handlePriceOrAreaInputValueChange(e, "end", setAreaRange, setIsError)}
+                        value={areaRange.end !== Infinity && areaRange.end !== null ? areaRange.end : ""} 
+                        onChange={(e) => handlePriceOrAreaInputValueChange(e, "end", setAreaRange, "area", setIsError)}
                         className={`${isError ? "border-error" : ""} rounded px-2`} 
                         placeholder="მდე" 
                         type="text" 
@@ -195,7 +216,7 @@ const DropdownButton = (props: {
                         areasData.map((area: number) => <button 
                             key={area} 
                             className="d-block bg-transparent border-0 fw-normal mt-2"
-                            onClick={() => handlePriceOrAreaSelect(setAreaRange, { start: area })}
+                            onClick={() => handlePriceOrAreaSelect(setAreaRange, { start: area }, "area")}
                           >
                             {deriveNumTag(area, "მ")}
                             <sup>2</sup>
@@ -211,7 +232,7 @@ const DropdownButton = (props: {
                         areasData.map((area: number) => <button 
                             key={area} 
                             className="d-block bg-transparent border-0 fw-normal mt-2"
-                            onClick={() => handlePriceOrAreaSelect(setAreaRange, { end: area })}
+                            onClick={() => handlePriceOrAreaSelect(setAreaRange, { end: area }, "area")}
                           >
                             {deriveNumTag(area, "მ")}
                             <sup>2</sup>
@@ -230,7 +251,17 @@ const DropdownButton = (props: {
                 
                 <div className="d-flex gap-2">
                 {
-                  roomsQuantityData.map((quantity: number) => <div role="button" className="select-button rounded px-4 py-3"><span>{quantity}</span></div>)
+                  roomsQuantityData.map((quantity: number) => (
+                      <div 
+                        key={quantity} 
+                        role="button" 
+                        className={`${roomsQuantity === quantity ? "selected" : ""} select-button rounded px-4 py-3`}
+                        onClick={() => handleRoomsQuantitySelect(setRoomsQuantity, quantity)}
+                      >
+                          <span>{quantity}</span>
+                      </div>
+                    )
+                  )
                 }
                 </div>
   

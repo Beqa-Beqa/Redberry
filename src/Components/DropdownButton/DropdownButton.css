@@ -11,8 +11,8 @@
 }
 
 .toggle-menu {
-  border: 1px solid var(--border-thin-color);
   z-index: 99;
+  background-color: var(--background);
 }
 
 .check-button {
@@ -41,6 +41,16 @@
 .select-button span {
   color: #808A93;
   opacity: 0.4;
+}
+
+.select-button.selected {
+  color: var(--text-bold);
+  border-color: var(--primary);
+}
+
+.select-button.selected span {
+  color: var(--text-bold);
+  opacity: 1;
 }
 
 .text-subtext {

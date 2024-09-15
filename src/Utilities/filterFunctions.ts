@@ -6,19 +6,32 @@
  */
 export const handleRegionSelect = (setValue: React.Dispatch<React.SetStateAction<string[]>>, value: string) => {
   setValue((prev) => {
-    if(prev.includes(value)) {
-      // Filter out the value
-      const newState = prev.filter((region) => region !== value);
-      // Return new state
-      return newState;
-    } else {
-      // Append the value to the state and return new state
-      return [...prev, value];
-    }
+    let newState = [...prev];
+
+    // Filter out the value
+    if(prev.includes(value)) newState = newState.filter((region) => region !== value);
+    // Append the value to the state
+    else newState.push(value);
+
+    // Update sessionStorage
+    sessionStorage.setItem("regionsFilter", JSON.stringify(newState));
+
+    return newState;
   });
 };
 
+/**
+ * @description Set state directly with provided value
+ * @param setValue State setter
+ * @param value array of strings
+ */
+export const handleRegionStateChange = (setValue: React.Dispatch<React.SetStateAction<string[]>>, value: string[]) => {
+  setValue(value);
+  sessionStorage.setItem("regionsFilter", JSON.stringify(value));
+}
+
 // <-------------------------------------------------------------------------------------------------->
+
 
 /**
  * 
@@ -26,7 +39,7 @@ export const handleRegionSelect = (setValue: React.Dispatch<React.SetStateAction
  * @param params Object which contains boundaries of price
  * @returns New state with updated range
  */
-export const handlePriceOrAreaSelect = (setValue: React.Dispatch<React.SetStateAction<{ start: number; end: number; }>>, params: { start?: number, end?: number }) => {
+export const handlePriceOrAreaSelect = (setValue: React.Dispatch<React.SetStateAction<{ start: number; end: number; }>>, params: { start?: number, end?: number }, type: "price" | "area") => {
   setValue((prev) => {
     const newState = {...prev};
 
@@ -41,13 +54,41 @@ export const handlePriceOrAreaSelect = (setValue: React.Dispatch<React.SetStateA
       if(newState.start > newState.end) newState.start = 0;
     }
 
+    const dataTag = type === "price" ? "pricesFilter" : "areasFilter";
+    sessionStorage.setItem(dataTag, JSON.stringify(newState));
+
     return newState;
   });
 }
 
-export const handlePriceOrAreaInputValueChange = (event: React.ChangeEvent<HTMLInputElement>, type: "start" | "end", setValue: React.Dispatch<React.SetStateAction<{ start: number; end: number; }>>, setError?: React.Dispatch<React.SetStateAction<boolean>> ) => {
+
+/**
+ * @description Set state directly with provided object
+ * @param setValue state setter
+ * @param params new object with proper values
+ * @param type type of filter
+ */
+export const handlePriceOrAreaStateChange = (setValue: React.Dispatch<React.SetStateAction<{ start: number; end: number; }>>, params: { start: number, end: number }, type: "price" | "area") => {
+  const dataToStore = type === "price" ? "pricesFilter" : "areasFilter";
+  setValue(params);
+  sessionStorage.setItem(dataToStore, JSON.stringify(params));
+}
+
+
+/**
+ * 
+ * @param event Event target element
+ * @param type start value or end value
+ * @param setValue state setter
+ * @param setError error state setter ( optional )
+ * @returns updates states and controls validation message
+ */
+export const handlePriceOrAreaInputValueChange = (event: React.ChangeEvent<HTMLInputElement>, type: "start" | "end", setValue: React.Dispatch<React.SetStateAction<{ start: number; end: number; }>>,  dataType: "price" | "area", setError?: React.Dispatch<React.SetStateAction<boolean>>) => {
   const value = event.target.value;
   const intValue = parseInt(value);
+  const dataTag = dataType === "price" ? "pricesFilter" : "areasFilter";
+
+  let dataToStore = "";
   
   if(intValue) {
     setValue((prev) => {
@@ -64,6 +105,10 @@ export const handlePriceOrAreaInputValueChange = (event: React.ChangeEvent<HTMLI
         else setError && setError(false);
       }
 
+      // Data to cache in session storage
+      dataToStore = JSON.stringify(newState);
+      sessionStorage.setItem(dataTag, dataToStore);
+
       return newState;
     });
   }
@@ -77,9 +122,23 @@ export const handlePriceOrAreaInputValueChange = (event: React.ChangeEvent<HTMLI
 
       setError && setError(prev => prev && false);
 
+      // Data to cache in session storage
+      dataToStore = JSON.stringify(newState);
+      sessionStorage.setItem(dataTag, dataToStore);
+
       return newState;
-    })
+    });
   }
 }
 
 // <------------------------------------------------------------------------------------------------------->
+
+/**
+ * 
+ * @param setValue state setter
+ * @param value number value for setting state to that value
+ */
+export const handleRoomsQuantitySelect = (setValue: React.Dispatch<React.SetStateAction<number>>, value: number) => {
+  setValue(value);
+  sessionStorage.setItem("roomsQuantityFilter", value.toString());
+}

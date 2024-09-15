@@ -1,0 +1,26 @@
+.property-card-container {
+  box-shadow: 5px 5px 12px 0px #02152614;
+  width: 24%;
+}
+
+.property-card-image-container {
+  background: url(../../Assets/Main/sample-image.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 280px;
+}
+
+.type-tag {
+  background-color: #02152680;
+}
+
+.price-tag {
+  font-size: 1.8rem;
+  color: var(--text-bold);
+}
+
+.icon {
+  width: 17px;
+  height: 17px;
+}
