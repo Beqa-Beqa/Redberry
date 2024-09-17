@@ -29,11 +29,23 @@ export const makeRequest = async (method: "GET" | "POST" | "DELETE", endpoint: s
       mode: "cors",
       cache: "no-cache",
       headers: new Headers({
-        "Content-Type": contentType ? contentType : "application/json"
+        "Accept": "application/json"
       })
     }
-    
-    if(body) options.body = JSON.stringify(body);
+
+    if(body && contentType !== "multipart/form-data") {
+      (options.headers as Headers).append("Content-Type", contentType || "application/json");
+      options.body = JSON.stringify(body);
+    }
+
+    if(body && contentType === "multipart/form-data") {
+      const formData = new FormData();
+
+      for(let key in body) { formData.append(key, body[key]) };
+
+      options.body = formData;
+    }
+
     if(withKey) (options.headers as Headers).append("Authorization", `Bearer ${key}`);
 
     const response = await fetch(`${baseUrl}/${endpoint}`, options);

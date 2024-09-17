@@ -1,0 +1,16 @@
+.add-agent-modal-background {
+  z-index: 900;
+  background-color: #02152657;
+  backdrop-filter: blur(4px);
+}
+
+.add-agent-modal {
+  background-color: var(--background);
+  max-width: 1000px;
+  max-height: 633px;
+}
+
+.agent-save-loading {
+  width: 1000px;
+  height: 633px;
+}

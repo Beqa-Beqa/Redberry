@@ -7,8 +7,8 @@ import { TfiDirection } from "react-icons/tfi";
 
 const PropertyCard = (props: PropertyCard) => {
   return (
-    <div role="button" className="property-card-container d-flex flex-column rounded-4 my-3">
-      <div className="property-card-image-container rounded-top-4">
+    <div role="button" className="property-card-container w-25 d-flex flex-column rounded-4 my-3">
+      <div style={{background: `url(${props.imageURL})`}} className="property-card-image-container rounded-top-4">
         <div className="type-tag d-inline-block rounded-4 px-3 py-1 mt-3 ms-4">
           <small className="text-contrast text-subtext text-center d-block user-select-none">
             {props.type === "sell" ? "იყიდება" : "ქირავდება"}

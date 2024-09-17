@@ -6,3 +6,4 @@ export {default as RadioButton} from "./AddListingInputs/RadioButton/RadioButton
 export {default as InputField} from "./AddListingInputs/InputField/InputField";
 export {default as TextareaField} from "./AddListingInputs/TextareaField/TextareaField";
 export {default as ImageField} from "./AddListingInputs/ImageField/ImageField";
+export {default as Loading} from "./Loading/Loading";

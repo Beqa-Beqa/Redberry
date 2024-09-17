@@ -18,6 +18,10 @@ const FilterContextProvider = (props: { children: React.ReactNode }) => {
   const areasFilter = JSON.parse(sessionStorage.getItem("areasFilter") || "{}");
   const roomsQuantityFilter = parseInt(sessionStorage.getItem("roomsQuantityFilter") || "0");
 
+  // Adjust nulls
+  if(pricesFilter && pricesFilter.end === null) pricesFilter.end = Infinity;
+  if(areasFilter && areasFilter.end === null) areasFilter.end = Infinity;
+
   // Filter value states
   const [regions, setRegions] = useState<string[]>(regionsFilter);
   const [priceRange, setPriceRange] = useState<{ start: number, end: number }>(pricesFilter);

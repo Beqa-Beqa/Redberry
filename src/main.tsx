@@ -6,14 +6,17 @@ import './index.css';
 import FilterContextProvider from './Contexts/FilterContext.tsx';
 import GeneralContextProvider from './Contexts/GeneralContext.tsx';
 import PageContextProvider from './Contexts/PageContext.tsx';
+import RealEstateContextProvider from './Contexts/RealEstateContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <PageContextProvider>
       <GeneralContextProvider>
-        <FilterContextProvider>
-          <App />
-        </FilterContextProvider>
+        <RealEstateContextProvider>
+          <FilterContextProvider>
+            <App />
+          </FilterContextProvider>
+        </RealEstateContextProvider>
       </GeneralContextProvider>
     </PageContextProvider>
   </StrictMode>,

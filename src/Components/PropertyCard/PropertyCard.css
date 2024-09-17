@@ -1,13 +1,11 @@
 .property-card-container {
   box-shadow: 5px 5px 12px 0px #02152614;
-  width: 24%;
 }
 
 .property-card-image-container {
-  background: url(../../Assets/Main/sample-image.jpg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: cover !important;
   height: 280px;
 }
 

@@ -32,6 +32,8 @@ const DropdownButton = (props: {
         tempArray = [];
       }
 
+      if((index + 1) === regionsArray.length && JSON.stringify(tempArray) !== "[]") dataArray.push(tempArray);
+
       return dataArray;
     }, [])
   })();
@@ -100,7 +102,7 @@ const DropdownButton = (props: {
 
                       <input 
                         value={priceRange.start > 0 && priceRange.start !== null ? priceRange.start : ""}
-                        onChange={(e) => handlePriceOrAreaInputValueChange(e, "start", setPriceRange, "price",setIsError)}
+                        onChange={(e) => handlePriceOrAreaInputValueChange(e, "start", setPriceRange, "price", setIsError)}
                         className={`${isError ? "border-error" : ""} rounded px-2 filter-input-field`} 
                         placeholder="დან" 
                         type="text" 

@@ -10,7 +10,7 @@ const InputField = (props: {
   tag: string,
   required?: boolean,
   validations?: { isValid: boolean | "init", text: string } [],
-  values?: Region[] | City[]
+  values?: Region[] | City[] | Agent[]
 }) => {
   const {value, setValue, onChange, type, className, tag, required, validations, values } = props;
 
@@ -37,7 +37,8 @@ const InputField = (props: {
                 values.map((value) => {
                   return (
                     <option key={value.id} value={value.id}>
-                      {value.name}
+                      {/* @ts-ignore */}
+                      {value.name} {value.hasOwnProperty("surname") ? value.surname : ""}
                     </option>
                   );
                 })

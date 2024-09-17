@@ -9,10 +9,10 @@ const Header = (props: {
   className?: string
 }) => {
   // Context provider
-  const { setCurrentPage } = useContext(PageContext);
+  const { setCurrentPage, setIsToggledAddAgent } = useContext(PageContext);
 
   const addListingHandler = () => changePage(setCurrentPage, "add-listing-page");
-  const addAgentHandler = () => {}
+  const addAgentHandler = () => setIsToggledAddAgent(true);
 
   return ( 
     <header className={`${props.className} d-flex w-100 gap-5 justify-content-between align-items-start`}>

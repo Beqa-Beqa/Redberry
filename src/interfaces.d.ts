@@ -81,7 +81,20 @@ declare interface PropertyCard {
   area: number,
   roomsQuantity: number,
   imageURL: any,
-  zipCode?: string
+  zipCode: string
+}
+
+declare interface Property {
+  id: number,
+  address: string,
+  zip_code: string,
+  price: number,
+  area: number,
+  bedrooms: number,
+  is_rental: 0 | 1,
+  image: string,
+  city_id: number,
+  city: City
 }
 
 declare interface RealEstatePostRequestBody {
@@ -94,13 +107,23 @@ declare interface RealEstatePostRequestBody {
   area: number,
   bedrooms: number,
   is_rental: 0 | 1,
-  agent_id?: number,
+  agent_id: number,
   image: any
+}
+
+declare interface AgentPostRequestBody {
+  name: string,
+  surname: string,
+  email: string,
+  phone: string,
+  avatar: File | null
 }
 
 declare interface PageContext {
   currentPage: Page,
-  setCurrentPage: React.Dispatch<React.SetStateAction<Page>>
+  setCurrentPage: React.Dispatch<React.SetStateAction<Page>>,
+  isToggledAddAgent: boolean,
+  setIsToggledAddAgent: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 declare type Page = "" | "add-listing-page";
