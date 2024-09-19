@@ -3,3 +3,4 @@ export {default as Header} from "./Header/Header";
 export {default as MainSection} from "./MainSection/MainSection";
 export {default as AddListingForm} from "./AddListingForm/AddListingForm";
 export {default as AddAgentForm} from "./AddAgentForm/AddAgentForm";
+export {default as HousePage} from "./HousePage/HousePage";

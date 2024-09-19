@@ -74,6 +74,10 @@ sup {
 	background-color: var(--primary) !important;
 }
 
+.bg-contrast {
+	background-color: var(--contrast-color);
+}
+
 .btn-primary {
 	background-color: var(--primary) !important;
 	color: var(--contrast-color);	
@@ -91,6 +95,17 @@ sup {
 
 .btn-primary-outline:hover {
 	background-color: var(--primary) !important;
+	color: var(--contrast-color) !important;
+}
+
+.btn-secondary {
+	background: transparent !important;
+	border: 1px solid #808A93 !important;
+	color: #808A93 !important;
+}
+
+.btn-secondary:hover {
+	background-color: #808A93 !important;
 	color: var(--contrast-color) !important;
 }
 
@@ -124,7 +139,7 @@ sup {
 
 .text-placeholder {
 	color: var(--text-bold);
-	opacity: 0.8;
+	opacity: 0.6;
 }
 
 .text-opaque {

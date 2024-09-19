@@ -5,5 +5,5 @@
 
 .dropdown-container,
 .dropdown-container ~ div {
-  max-width: 810px;
+  max-width: 800px;
 }

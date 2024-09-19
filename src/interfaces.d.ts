@@ -69,6 +69,11 @@ declare interface Agent {
   avatar: string
 }
 
+declare interface ResponseAgent extends Agent {
+  email: string,
+  phone: string
+}
+
 declare interface GlobalContext {
   regionsArray: Region[],
   citiesArray: City[]
@@ -81,7 +86,8 @@ declare interface PropertyCard {
   area: number,
   roomsQuantity: number,
   imageURL: any,
-  zipCode: string
+  zipCode: string,
+  onClick?: () => void
 }
 
 declare interface Property {
@@ -95,6 +101,13 @@ declare interface Property {
   image: string,
   city_id: number,
   city: City
+}
+
+declare interface ResponseProperty extends Property {
+  description: string,
+  created_at: string,
+  agent_id: number,
+  agent: ResponseAgent
 }
 
 declare interface RealEstatePostRequestBody {
@@ -126,4 +139,4 @@ declare interface PageContext {
   setIsToggledAddAgent: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-declare type Page = "" | "add-listing-page";
+declare type Page = "" | "house" | "add-listing-page"

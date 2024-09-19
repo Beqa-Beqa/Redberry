@@ -1,0 +1,36 @@
+.type-tag {
+  background-color: #02152680;
+}
+
+.price-tag {
+  font-size: 1.8rem;
+  color: var(--text-bold);
+}
+
+.icon {
+  width: 17px;
+  height: 17px;
+}
+
+.icon-big {
+  width: 20px;
+  height: 20px;
+}
+
+.agent-details-container {
+  border: 1px solid var(--border-thin-color);
+}
+
+.custom-modal {
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+}
+
+.w-24 {
+  width: 24%;
+}
+
+.custom-carousel {
+  scroll-behavior: smooth;
+}

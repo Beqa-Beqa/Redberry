@@ -272,7 +272,7 @@ const DropdownButton = (props: {
               null
             }
             <div className="w-100 d-flex justify-content-end pe-4">
-              <button className="btn-primary rounded border-0 px-3 py-2 mb-4 mt-2">არჩევა</button>
+              <button onClick={() => setMenuVisible("none")} className="btn-primary rounded border-0 px-3 py-2 mb-4 mt-2">არჩევა</button>
             </div>
           </div>
         : null

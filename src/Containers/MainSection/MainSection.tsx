@@ -3,6 +3,8 @@ import "./MainSection.css";
 import { useContext } from "react";
 import { RealEstateContext } from "../../Contexts/RealEstateContext";
 import { FilterContext } from "../../Contexts/FilterContext";
+import { changeCurrentProperty, changePage, makeRequest } from "../../Utilities/functions";
+import { PageContext } from "../../Contexts/PageContext";
 
 const MainSection = (props: {
   className?: string
@@ -11,9 +13,11 @@ const MainSection = (props: {
 
   // Context values
   // Properties
-  const { properties } = useContext(RealEstateContext);
+  const { properties, setCurrentProperty, currentProperty } = useContext(RealEstateContext);
   // Filter
   const { regions, priceRange, areaRange, roomsQuantity } = useContext(FilterContext);
+  // Page
+  const { setCurrentPage } = useContext(PageContext);
 
   const sortedProperties = (() => {
     const satisfiesFilter = (property: Property) => {
@@ -28,50 +32,50 @@ const MainSection = (props: {
       return inRegionRange && inPriceRange && inAreaRange && inRoomsRange;
     }
 
-    const filteredProperties = properties.filter(satisfiesFilter);
-
-    let tempArray: Property[] = [];
-    return filteredProperties.reduce((dataArray: Property[][], property: Property, index: number) => {
-      tempArray.push(property);
-
-      if((index + 1) % 4 === 0) {
-        dataArray.push(tempArray);
-        tempArray = [];
-      }
-
-      if((index + 1) === filteredProperties.length && JSON.stringify(tempArray) !== "[]") dataArray.push(tempArray);
-
-      return dataArray;
-    }, []);
+    return properties.filter(satisfiesFilter);
   })();
+
+  const handlePropertyCardClick = async (property: Property) => {
+    if(currentProperty?.id !== property.id) {
+      try {
+        const result = await makeRequest("GET", `real-estates/${property.id}`, true);
+        changeCurrentProperty(setCurrentProperty, result);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    changePage(setCurrentPage, "house");
+  }
 
   return (
     <main className={`${className ? className : ""} d-flex flex-wrap w-100 gap-3`}>
-      {
-        sortedProperties && sortedProperties.length ?
-          sortedProperties.map((propertyChunk, index) => {
-            return <div className="d-flex w-100 align-items-center gap-4" key={index}>
-              {
-                propertyChunk.map((property, index) => {
-
-                  return (
-                    <PropertyCard
-                      key={index}
-                      type={property.is_rental === 1 ? "rent" : "sell"}
-                      price={property.price}
-                      area={property.area}
-                      address={property.address}
-                      roomsQuantity={property.bedrooms}
-                      zipCode={property.zip_code}
-                      imageURL={property.image}
-                    />
-                  )
-                })
-              }
-            </div>
-          })
-        : null
-      }
+      <div className="container mx-0 px-0 w-100">
+        <div className="row">
+          {
+            sortedProperties.length ?
+              sortedProperties.map((property) => {
+                return (
+                  <PropertyCard
+                    key={property.id}
+                    data={{
+                      onClick: () => handlePropertyCardClick(property),
+                      type: property.is_rental === 1 ? "rent" : "sell",
+                      price: property.price,
+                      area: property.area,
+                      address: property.address,
+                      roomsQuantity: property.bedrooms,
+                      zipCode: property.zip_code,
+                      imageURL: property.image
+                    }}
+                    className="w-25"
+                  />
+                )
+              })
+            : null
+          }
+        </div>
+      </div>
     </main>
   );
 }
