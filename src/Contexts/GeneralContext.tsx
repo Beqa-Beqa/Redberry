@@ -11,15 +11,11 @@ const GeneralContextProvider = (props: { children: React.ReactNode }) => {
   const fetchedRegions = JSON.parse(sessionStorage.getItem("regionsData") || "[]");
   // Cities data
   const fetchedCitiesData = JSON.parse(sessionStorage.getItem("citiesData") || "[]")
-  // Agents data
-  const fetchedAgentsData = JSON.parse(sessionStorage.getItem("agentsData") || "[]");
 
   // Regions data state
   const [regionsArray, setRegionsArray] = useState<Region[]>(fetchedRegions);
   // City data state 
   const [citiesArray, setCitiesArray] = useState<City[]>(fetchedCitiesData);
-  // Agents data state
-  const [agentsArray, setAgentsArray] = useState<Agent[]>(fetchedAgentsData);
 
   useEffect(() => {
     const fetchRegions = async () => {
@@ -48,22 +44,8 @@ const GeneralContextProvider = (props: { children: React.ReactNode }) => {
       }
     }
 
-    const fetchAgents = async () => {
-      if(agentsArray.length === 0) {
-        // Fetch agents
-        try {
-          const result = await makeRequest("GET", "agents", true);
-          sessionStorage.setItem("agentsData", JSON.stringify(result));
-          setAgentsArray(result)
-        } catch (err) {
-          console.log(err);
-        }
-      }
-    }
-
     fetchRegions();
     fetchCities();
-    // fetchAgents();
   }, []);
 
   return <GeneralContext.Provider value={{ regionsArray, citiesArray }}>

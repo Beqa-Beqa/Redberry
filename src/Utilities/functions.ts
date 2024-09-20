@@ -41,7 +41,7 @@ export const makeRequest = async (method: "GET" | "POST" | "DELETE", endpoint: s
     if(body && contentType === "multipart/form-data") {
       const formData = new FormData();
 
-      for(let key in body) { formData.append(key, body[key]) };
+      for(const key in body) { formData.append(key, body[key]) };
 
       options.body = formData;
     }

@@ -31,7 +31,7 @@ const AddAgentForm = (props: {
   // Regular expressions
   const atLeast2SymbolRegex = /^.{2,}$/;
   const digitsRegex = /^[0-9]*$/;
-  const emailRegex = /^[\w-\.]+@redberry.ge\s*$/g;
+  const emailRegex = /^[\w-.]+@redberry.ge\s*$/g;
 
   // Change handlers
   const handleNameFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
