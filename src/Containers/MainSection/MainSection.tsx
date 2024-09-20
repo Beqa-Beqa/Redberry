@@ -59,6 +59,7 @@ const MainSection = (props: {
     }
 
     changePage(setCurrentPage, "house");
+    scrollTo({ left: 0, top: 0, behavior: "instant" });
   }
 
   return (

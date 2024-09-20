@@ -75,6 +75,8 @@ const HousePage = (props: {
     } catch (err) {
       console.log(err);
     }
+    
+    scrollTo({ left: 0, top: 0, behavior: "instant" });
   }
 
   return (
