@@ -19,17 +19,22 @@ const MainSection = (props: {
   // Page
   const { setCurrentPage } = useContext(PageContext);
 
+  // Properties to list on main page
   const sortedProperties = (() => {
     const satisfiesFilter = (property: Property) => {
       const inRegionRange = !regions.length || regions.includes(property.city.region.name);
 
-      const inPriceRange = priceRange.start <= property.price && priceRange.end >= property.price;
+      // Weird filter as requested
+      const inPriceRange = (priceRange.start > 0 && priceRange.start <= property.price) && (priceRange.end !== Infinity && priceRange.end >= property.price);
 
-      const inAreaRange = areaRange.start <= property.area && areaRange.end >= property.area;
+      // Weird filter as requested
+      const inAreaRange = (areaRange.start > 0 && areaRange.start <= property.area) && (areaRange.end !== Infinity && areaRange.end >= property.area);
 
-      const inRoomsRange = !roomsQuantity || roomsQuantity === property.bedrooms;
+      // Weird filter as requested
+      const inRoomsRange = roomsQuantity === property.bedrooms;
 
-      return inRegionRange && inPriceRange && inAreaRange && inRoomsRange;
+      // Weird filter as requested
+      return inRegionRange || inPriceRange || inAreaRange || inRoomsRange;
     }
 
     return properties.filter(satisfiesFilter);
