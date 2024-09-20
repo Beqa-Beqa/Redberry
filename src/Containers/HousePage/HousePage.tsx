@@ -145,51 +145,53 @@ const HousePage = (props: {
 
         {/* Suggestions */}
 
-        <div className="my-5">
-          <h2 className="text-dark fs-2">ბინები მსგავს ლოკაციაზე</h2>
+        {
+          propertiesInRegion.length ?
+            <div className="my-5">
+              <h2 className="text-dark fs-2">ბინები მსგავს ლოკაციაზე</h2>
 
-          <div className="w-100 position-relative">
-            {/* Left arrow */}
-            <div style={{left: -35, zIndex: 900}} className="position-absolute h-100 d-flex align-items-center">
-              <FaArrowLeft onClick={() => handleCarouselSlide("left")} className="icon-big" role="button" />
-            </div>
+              <div className="w-100 position-relative">
+                {/* Left arrow */}
+                <div style={{left: -35, zIndex: 900}} className="position-absolute h-100 d-flex align-items-center">
+                  <FaArrowLeft onClick={() => handleCarouselSlide("left")} className="icon-big" role="button" />
+                </div>
 
-            {/* Flats */}
+                {/* Flats */}
 
-            <div className="mt-4 w-100 container mx-0 px-0">
-              <div ref={carouselRef} className="custom-carousel row flex-nowrap overflow-hidden">
-                {
-                  propertiesInRegion.length ?
-                    propertiesInRegion.map((property) => {
-                      return (
-                        <div key={property.id} className="col-3">
-                          <PropertyCard
-                            data={{
-                              type: property.is_rental === 1 ? "rent" : "sell",
-                              address: property.address,
-                              area: property.area,
-                              price: property.price,
-                              imageURL: property.image,
-                              roomsQuantity: property.bedrooms,
-                              zipCode: property.zip_code,
-                              onClick: () => handlePropertyCardClick(property)
-                            }}
-                            className="w-100"
-                          />
-                        </div>
-                      )
-                    })
-                  : null
-                }
+                <div className="mt-4 w-100 container-fluid mx-0 px-0">
+                  <div ref={carouselRef} className="custom-carousel row flex-nowrap overflow-hidden">
+                    {
+                      propertiesInRegion.map((property) => {
+                        return (
+                          <div key={property.id} className="col-3">
+                            <PropertyCard
+                              data={{
+                                type: property.is_rental === 1 ? "rent" : "sell",
+                                address: property.address,
+                                area: property.area,
+                                price: property.price,
+                                imageURL: property.image,
+                                roomsQuantity: property.bedrooms,
+                                zipCode: property.zip_code,
+                                onClick: () => handlePropertyCardClick(property)
+                              }}
+                              className="w-100"
+                            />
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+
+                  {/* Right arrow */}
+                  <div style={{right: -30, zIndex: 900}} className="position-absolute top-0 h-100 d-flex align-items-center">
+                    <FaArrowRight onClick={() => handleCarouselSlide("right")} className="icon-big" role="button" />
+                  </div>
+                </div>
               </div>
-
-              {/* Right arrow */}
-              <div style={{right: -30, zIndex: 900}} className="position-absolute top-0 h-100 d-flex align-items-center">
-                <FaArrowRight onClick={() => handleCarouselSlide("right")} className="icon-big" role="button" />
-              </div>
             </div>
-          </div>
-        </div>        
+          : null
+        }      
       </section>
 
       {/* Delete modal and loading state */}

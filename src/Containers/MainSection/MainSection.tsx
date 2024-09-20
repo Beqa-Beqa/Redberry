@@ -22,19 +22,27 @@ const MainSection = (props: {
   // Properties to list on main page
   const sortedProperties = (() => {
     const satisfiesFilter = (property: Property) => {
+      // Flags
+      const hasRegionFilter = regions.length > 0;
+      const hasPriceFilter = priceRange.start > 0 || priceRange.end !== Infinity;
+      const hasAreaFilter = areaRange.start > 0 || areaRange.end !== Infinity;
+      const hasRoomsFilter = roomsQuantity > 0;
+
+      // Ranges
       const inRegionRange = !regions.length || regions.includes(property.city.region.name);
+      const inPriceRange = priceRange.start <= property.price && priceRange.end >= property.price;
+      const inAreaRange = areaRange.start <= property.area && areaRange.end >= property.area;
+      const inRoomsRange = roomsQuantity !== 0 && roomsQuantity === property.bedrooms;
 
       // Weird filter as requested
-      const inPriceRange = (priceRange.start > 0 && priceRange.start <= property.price) && (priceRange.end !== Infinity && priceRange.end >= property.price);
+      if(!hasRegionFilter) {
 
-      // Weird filter as requested
-      const inAreaRange = (areaRange.start > 0 && areaRange.start <= property.area) && (areaRange.end !== Infinity && areaRange.end >= property.area);
-
-      // Weird filter as requested
-      const inRoomsRange = roomsQuantity === property.bedrooms;
-
-      // Weird filter as requested
-      return inRegionRange || inPriceRange || inAreaRange || inRoomsRange;
+        if(!hasPriceFilter && !hasAreaFilter && !hasRoomsFilter) return true;
+        else return (hasPriceFilter && inPriceRange) || (hasAreaFilter && inAreaRange) || (hasRoomsFilter && inRoomsRange);
+        
+      } else {
+        return (hasRegionFilter && inRegionRange) || (hasPriceFilter && inPriceRange) || (hasAreaFilter && inAreaRange) || (hasRoomsFilter && inRoomsRange);
+      }
     }
 
     return properties.filter(satisfiesFilter);
@@ -54,9 +62,9 @@ const MainSection = (props: {
   }
 
   return (
-    <main className={`${className ? className : ""} d-flex flex-wrap w-100 gap-3`}>
-      <div className="container mx-0 px-0 w-100">
-        <div className="row">
+    <main className={`${className ? className : ""} w-100 gap-3`}>
+      <div className="container-fluid mx-0 px-0 w-100">
+        <div className="row w-100">
           {
             sortedProperties.length ?
               sortedProperties.map((property) => {
@@ -77,7 +85,8 @@ const MainSection = (props: {
                   />
                 )
               })
-            : null
+            : 
+              <p className="mt-4 py-2">აღნიშნული მონაცემებით განცხადება არ იძებნება</p>
           }
         </div>
       </div>

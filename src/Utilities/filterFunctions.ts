@@ -39,7 +39,7 @@ export const handleRegionStateChange = (setValue: React.Dispatch<React.SetStateA
  * @param params Object which contains boundaries of price
  * @returns New state with updated range
  */
-export const handlePriceOrAreaSelect = (setValue: React.Dispatch<React.SetStateAction<{ start: number; end: number; }>>, params: { start?: number, end?: number }, type: "price" | "area") => {
+export const handlePriceOrAreaSelect = (setValue: React.Dispatch<React.SetStateAction<{ start: number; end: number; }>>, params: { start?: number, end?: number }, type: "price" | "area",   setIsError: React.Dispatch<React.SetStateAction<boolean>>) => {
   setValue((prev) => {
     const newState = {...prev};
 
@@ -53,6 +53,8 @@ export const handlePriceOrAreaSelect = (setValue: React.Dispatch<React.SetStateA
       newState.end = params.end;
       if(newState.start > newState.end) newState.start = 0;
     }
+    
+    setIsError(false);
 
     const dataTag = type === "price" ? "pricesFilter" : "areasFilter";
     sessionStorage.setItem(dataTag, JSON.stringify(newState));
@@ -83,7 +85,7 @@ export const handlePriceOrAreaStateChange = (setValue: React.Dispatch<React.SetS
  * @param setError error state setter ( optional )
  * @returns updates states and controls validation message
  */
-export const handlePriceOrAreaInputValueChange = (event: React.ChangeEvent<HTMLInputElement>, type: "start" | "end", setValue: React.Dispatch<React.SetStateAction<{ start: number; end: number; }>>,  dataType: "price" | "area", setError?: React.Dispatch<React.SetStateAction<boolean>>) => {
+export const handlePriceOrAreaInputValueChange = (event: React.ChangeEvent<HTMLInputElement>, type: "start" | "end", setValue: React.Dispatch<React.SetStateAction<{ start: number; end: number; }>>,  dataType: "price" | "area", setError: React.Dispatch<React.SetStateAction<boolean>>) => {
   const value = event.target.value;
   const intValue = parseInt(value);
   const dataTag = dataType === "price" ? "pricesFilter" : "areasFilter";
@@ -96,13 +98,13 @@ export const handlePriceOrAreaInputValueChange = (event: React.ChangeEvent<HTMLI
       
       if(type === "start")  {
         newState.start = intValue;
-        if(newState.start > newState.end) setError && setError(true);
-        else setError && setError(false);
+        if(newState.start > newState.end) setError(true);
+        else setError(false);
       }
       if(type === "end") {
         newState.end = intValue;
-        if(newState.start > newState.end) setError && setError(true);
-        else setError && setError(false);
+        if(newState.start > newState.end) setError(true);
+        else setError(false);
       }
 
       // Data to cache in session storage
@@ -120,7 +122,7 @@ export const handlePriceOrAreaInputValueChange = (event: React.ChangeEvent<HTMLI
       if(type === "start") newState.start = 0;
       if(type === "end") newState.end = Infinity;
 
-      setError && setError(prev => prev && false);
+      setError(prev => prev && false);
 
       // Data to cache in session storage
       dataToStore = JSON.stringify(newState);

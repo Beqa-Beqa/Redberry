@@ -1,4 +1,6 @@
-export {default as DropdownButton} from "./DropdownButton/DropdownButton";
+export {default as RegionSelect} from "./DropdownButtons/RegionSelect/RegionSelect";
+export {default as PriceOrAreaSelect} from "./DropdownButtons/PriceOrAreaSelect/PriceOrAreaSelect";
+export {default as RoomsSelect} from "./DropdownButtons/RoomsSelect/RoomsSelect";
 export {default as Button} from "./Button/Button";
 export {default as FilterButton} from "./FilterButton/FilterButton";
 export {default as PropertyCard} from "./PropertyCard/PropertyCard";

@@ -45,13 +45,13 @@ const FilterButton = (props: {
         priceRange ?
 
           <span className="text-placeholder">
-            {priceRange.start} - {priceRange.end !== Infinity ? priceRange.end : ""} ₾
+            {priceRange.start} ₾ - {priceRange.end !== Infinity ? priceRange.end : ""} ₾
           </span>
 
         : areaRange ?
 
           <span className="text-placeholder">
-            {areaRange.start} - {areaRange.end !== Infinity ? areaRange.end : ""} მ<sup>2</sup>
+            {areaRange.start} მ<sup>2</sup> - {areaRange.end !== Infinity ? areaRange.end : ""} მ<sup>2</sup>
           </span>
 
         : roomsQuantity ? 
