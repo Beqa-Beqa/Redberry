@@ -7,6 +7,7 @@ const InputField = (props: {
   value: string,
   setValue: React.Dispatch<React.SetStateAction<string>>,
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  onSelectChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void,
   type: string,
   className?: string,
   tag: string,
@@ -14,7 +15,7 @@ const InputField = (props: {
   validations?: { isValid: boolean | "init", text: string } [],
   values?: Region[] | City[] | Agent[]
 }) => {
-  const {value, setValue, onChange, type, className, tag, required, validations, values } = props;
+  const {value, setValue, onChange, onSelectChange, type, className, tag, required, validations, values } = props;
 
   const { setIsToggledAddAgent } = useContext(PageContext);
 
@@ -33,7 +34,10 @@ const InputField = (props: {
       { 
         type === "select" ?
           <select 
-            onChange={(e) => handleListingSelectFieldValueChange(e)} 
+            onChange={(e) => {
+              handleListingSelectFieldValueChange(e);
+              if(onSelectChange) onSelectChange(e);
+            }}
             value={value ? value : tag} 
             className={`${failsValidation ? "border-error" : ""} custom-input-field rounded-2 w-100 px-2 bg-transparent`}
           >

@@ -7,15 +7,10 @@ export const GeneralContext = createContext<GlobalContext>({
 });
 
 const GeneralContextProvider = (props: { children: React.ReactNode }) => {
-  // Get regions data from session storage
-  const fetchedRegions = JSON.parse(sessionStorage.getItem("regionsData") || "[]");
-  // Cities data
-  const fetchedCitiesData = JSON.parse(sessionStorage.getItem("citiesData") || "[]")
-
   // Regions data state
-  const [regionsArray, setRegionsArray] = useState<Region[]>(fetchedRegions);
+  const [regionsArray, setRegionsArray] = useState<Region[]>([]);
   // City data state 
-  const [citiesArray, setCitiesArray] = useState<City[]>(fetchedCitiesData);
+  const [citiesArray, setCitiesArray] = useState<City[]>([]);
 
   useEffect(() => {
     const fetchRegions = async () => {
@@ -23,7 +18,6 @@ const GeneralContextProvider = (props: { children: React.ReactNode }) => {
         // Fetch regions
         try {
           const result = await makeRequest("GET", "regions");
-          sessionStorage.setItem("regionsData", JSON.stringify(result));
           setRegionsArray(result);
         } catch (err) {
           console.log(err);
@@ -36,7 +30,6 @@ const GeneralContextProvider = (props: { children: React.ReactNode }) => {
         // Fetch cities
         try {
           const result = await makeRequest("GET", "cities");
-          sessionStorage.setItem("citiesData", JSON.stringify(result));
           setCitiesArray(result)
         } catch (err) {
           console.log(err);

@@ -18,12 +18,6 @@ const AddListingForm = (props: {
   // Agents data
   const { agents, triggerAgentsFetch } = useContext(RealEstateContext);
 
-  useEffect(() => {
-    setIsLoading(true);
-    triggerAgentsFetch();
-    setIsLoading(false);
-  }, []);
-
   // Submit button state
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
 
@@ -72,14 +66,57 @@ const AddListingForm = (props: {
   // Description
   const [isDescriptionValid, setIsDescriptionValid] = useState<boolean | null>(null);
 
-  // Regular expression
-  const atLeast2SymbolRegex = /^.{2,}$/;
-  const digitsRegex = /^[0-9]*$/;
-  const atLeast5WordRegex = /^(\S+ +){4,}\S+\s*$/;
+  // Fetch agents and update states to saved values
+  useEffect(() => {
+    setIsLoading(true);
+    triggerAgentsFetch();
+    setIsLoading(false);
+
+    const savedType = (sessionStorage.getItem("listing-type") as "sell" | "rent") || "";
+    const savedAddress = sessionStorage.getItem("listing-address") || "";
+    const savedPostalindex = sessionStorage.getItem("listing-postalindex") || "";
+    const savedRegion = sessionStorage.getItem("listing-region") || "";
+    const savedCity = sessionStorage.getItem("listing-city") || "";
+    const savedPrice = sessionStorage.getItem("listing-price") || "";
+    const savedArea = sessionStorage.getItem("listing-area") || "";
+    const savedRoomsQuantity = sessionStorage.getItem("listing-roomsQuantity") || "";
+    const savedDescription = sessionStorage.getItem("listing-description") || "";
+    const savedAgent = sessionStorage.getItem("listing-agent") || "";
+
+    setType(savedType);
+    setAddress(savedAddress);
+    setPostalIndex(savedPostalindex);
+    setRegion(savedRegion);
+    setCity(savedCity);
+    setPrice(savedPrice);
+    setArea(savedArea);
+    setRoomsQuantity(savedRoomsQuantity);
+    setDescription(savedDescription);
+    setAgent(savedAgent);
+  
+  }, []);
 
   useEffect(() => {
     if(isButtonDisabled) setIsButtonDisabled(false);
   }, [type, address, postalIndex, region, city, price, area, roomsQuantity, description, image, agent]);
+  
+  const clearSessionStorage = () => {
+    sessionStorage.removeItem("listing-type");
+    sessionStorage.removeItem("listing-address");
+    sessionStorage.removeItem("listing-postalindex");
+    sessionStorage.removeItem("listing-region");
+    sessionStorage.removeItem("listing-city");
+    sessionStorage.removeItem("listing-price");
+    sessionStorage.removeItem("listing-area");
+    sessionStorage.removeItem("listing-roomsQuantity");
+    sessionStorage.removeItem("listing-description");
+    sessionStorage.removeItem("listing-agent");
+  }
+
+  // Regular expression
+  const atLeast2SymbolRegex = /^.{2,}$/;
+  const digitsRegex = /^[0-9]*$/;
+  const atLeast5WordRegex = /^(\S+ +){4,}\S+\s*$/;
 
   // Addres field change handlers
   const handleAddressFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,6 +126,7 @@ const AddListingForm = (props: {
     else setIsAddressValid(false);
 
     setAddress(val);
+    sessionStorage.setItem("listing-address", val);
   }
 
   const handlePostalFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,6 +137,7 @@ const AddListingForm = (props: {
     else setIsPostalIndexValid(false);
     
     setPostalIndex(val);
+    sessionStorage.setItem("listing-postalindex", val);
   }
 
   // Flat field change handlers
@@ -109,6 +148,7 @@ const AddListingForm = (props: {
     else setIsPriceValid(false);
     
     setPrice(val);
+    sessionStorage.setItem("listing-price", val);
   }
 
   const handleAreaFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,6 +158,7 @@ const AddListingForm = (props: {
     else setIsAreaValid(false);
     
     setArea(val);
+    sessionStorage.setItem("listing-area", val);
   }
 
   const handleRoomsQuantityFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,6 +168,7 @@ const AddListingForm = (props: {
     else setIsRoomsQuantityValid(false);
     
     setRoomsQuantity(val);
+    sessionStorage.setItem("listing-roomsQuantity", val);
   }
 
   // Description field change handler
@@ -137,10 +179,14 @@ const AddListingForm = (props: {
     else setIsDescriptionValid(false);
 
     setDescription(val);
+    sessionStorage.setItem("listing-description", val);
   }
 
   // Handle cancel
-  const handleCancel = () => changePage(setCurrentPage, "");
+  const handleCancel = () => {
+    clearSessionStorage();
+    changePage(setCurrentPage, "");
+  }
 
   // Handle submit
   const handleSubmit = async () => {
@@ -169,6 +215,7 @@ const AddListingForm = (props: {
       }
 
       setIsLoading(false);
+      clearSessionStorage();
       changePage(setCurrentPage, "");
     } else {
       setIsButtonDisabled(true);
@@ -182,8 +229,8 @@ const AddListingForm = (props: {
         <div className="w-50 mt-2">
           <h2 className="text-dark fs-5">გარიგების ტიპი</h2>
           <div className="w-100 mt-3">
-            <RadioButton checked={type === "sell"} onChange={() => setType("sell")} className="me-5" label="იყიდება" />
-            <RadioButton checked={type === "rent"} onChange={() => setType("rent")} className="ms-5" label="ქირავდება" />
+            <RadioButton checked={type === "sell"} onChange={() => { setType("sell"); sessionStorage.setItem("listing-type", "sell"); }} className="me-5" label="იყიდება" />
+            <RadioButton checked={type === "rent"} onChange={() => { setType("rent"); sessionStorage.setItem("listing-type", "rent"); }} className="ms-5" label="ქირავდება" />
           </div>
         </div>
 
@@ -236,6 +283,7 @@ const AddListingForm = (props: {
             <InputField
               value={region}
               setValue={setRegion}
+              onSelectChange={(e: React.ChangeEvent<HTMLSelectElement>) => sessionStorage.setItem("listing-region", e.target.value)}
               type="select" 
               className="w-50" 
               tag="რეგიონი" 
@@ -247,6 +295,7 @@ const AddListingForm = (props: {
             <InputField
               value={city}
               setValue={setCity}
+              onSelectChange={(e: React.ChangeEvent<HTMLSelectElement>) => sessionStorage.setItem("listing-city", e.target.value)}
               type="select" 
               className="w-50" 
               tag="ქალაქი" 
@@ -353,6 +402,7 @@ const AddListingForm = (props: {
               type="select"
               value={agent}
               setValue={setAgent}
+              onSelectChange={(e: React.ChangeEvent<HTMLSelectElement>) => sessionStorage.setItem("listing-agent", e.target.value)}
               values={agents}
             />
           </div>
