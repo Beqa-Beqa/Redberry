@@ -16,24 +16,12 @@ const AddListingForm = (props: {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Agents data
-  const [agents, setAgents] = useState<Agent[]>([]);
+  const { agents, triggerAgentsFetch } = useContext(RealEstateContext);
 
   useEffect(() => {
-    const fetchAgents = async () => {
-      setIsLoading(true);
-
-      try {
-        const reuslt = await makeRequest("GET", "agents", true);
-
-        setAgents(reuslt);
-      } catch (err) {
-        console.log(err);
-      }
-
-      setIsLoading(false);
-    }
-
-    fetchAgents();
+    setIsLoading(true);
+    triggerAgentsFetch();
+    setIsLoading(false);
   }, []);
 
   // Submit button state

@@ -1,16 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button, ImageField, InputField, Loading } from "../../Components";
 import "./AddAgentForm.css";
 import { makeRequest } from "../../Utilities/functions";
+import { RealEstateContext } from "../../Contexts/RealEstateContext";
 
 const AddAgentForm = (props: {
   hideMenu: () => void,
   refetchAgents?: () => void,
 }) => {
+  // Props
   const { hideMenu, refetchAgents } = props;
 
   // Loading state
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  // Context
+  const { triggerAgentsFetch } = useContext(RealEstateContext);
 
   // Value holder states
   const [name, setName] = useState<string>("");
@@ -98,6 +103,7 @@ const AddAgentForm = (props: {
         if(result && refetchAgents) refetchAgents();
 
         hideMenu();
+        triggerAgentsFetch();
 
       } catch (err) {
         console.log(err);

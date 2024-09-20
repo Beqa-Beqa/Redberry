@@ -4,7 +4,10 @@ import { makeRequest } from "../Utilities/functions";
 export const RealEstateContext = createContext<{
   properties: Property[],
   setProperties: React.Dispatch<React.SetStateAction<Property[]>>,
+  agents: Agent[],
+  setAgents: React.Dispatch<React.SetStateAction<Agent[]>>,
   triggerPropertyFetch: () => void,
+  triggerAgentsFetch: () => void,
   currentProperty: ResponseProperty | undefined,
   setCurrentProperty: React.Dispatch<React.SetStateAction<ResponseProperty | undefined>>
 }>({
@@ -12,14 +15,19 @@ export const RealEstateContext = createContext<{
   setProperties: () => {},
   triggerPropertyFetch: () => {},
   currentProperty: undefined,
-  setCurrentProperty: () => {}
+  setCurrentProperty: () => {},
+  agents: [],
+  setAgents: () => {},
+  triggerAgentsFetch: () => {}
 });
 
 const RealEstateContextProvider = (props: {children: React.ReactNode}) => {
   // Properties state
   const [properties, setProperties] = useState<Property[]>([]);
-  // Fetch triggers tate
-  const [fetch, setRefetch] = useState<boolean>(false);
+  const [agents, setAgents] = useState<Agent[]>([]);
+  // Fetch trigger states
+  const [propertyFetch, setPropertyRefetch] = useState<boolean>(false);
+  const [agentsFetch, setAgentsFetch] = useState<boolean>(false);
 
   // Check for already fetched current property
   let existingCurrentProperty = JSON.parse(sessionStorage.getItem("currentProperty") || "{}");
@@ -29,7 +37,10 @@ const RealEstateContextProvider = (props: {children: React.ReactNode}) => {
   const [currentProperty, setCurrentProperty] = useState<ResponseProperty | undefined>(existingCurrentProperty);
 
   // Trigger proeprty fetch
-  const triggerPropertyFetch = () => setRefetch(!fetch);
+  const triggerPropertyFetch = () => setPropertyRefetch(!fetch);
+
+  // Trigger agents fetch
+  const triggerAgentsFetch = () => setAgentsFetch(!agentsFetch);
 
   // Fetch proeprties
   useEffect(() => {
@@ -43,9 +54,23 @@ const RealEstateContextProvider = (props: {children: React.ReactNode}) => {
     }
 
     fetchProperties();
-  }, [fetch]);
+  }, [propertyFetch]);
 
-  return <RealEstateContext.Provider value={{ properties, setProperties, triggerPropertyFetch, currentProperty, setCurrentProperty }}>
+  useEffect(() => {
+    const fetchAgents = async () => {
+      try {
+        const reuslt = await makeRequest("GET", "agents", true);
+
+        setAgents(reuslt);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    fetchAgents();
+  }, [agentsFetch]);
+
+  return <RealEstateContext.Provider value={{ properties, setProperties, triggerPropertyFetch, currentProperty, setCurrentProperty, agents, setAgents, triggerAgentsFetch }}>
     {props.children}
   </RealEstateContext.Provider>
 }
