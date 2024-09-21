@@ -24,7 +24,7 @@ const PropertyCard = (props: {
         <h4 className="fw-bold price-tag">{deriveNumTag(data.price, "₾", " ")}</h4>
         <div className="mt-3 d-flex align-items-center gap-1">
           <FaLocationDot className="icon" />
-          <span>{data.address}</span>
+          <span>{data.city.name}, {data.address}</span>
         </div>
         <div className="d-flex align-items-center gap-4 mt-3">
           <div className="d-flex align-items-center gap-1">

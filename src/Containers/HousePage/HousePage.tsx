@@ -98,7 +98,7 @@ const HousePage = (props: {
             <h2 className="fw-bold fs-2 mb-4">{deriveNumTag(data.price, "₾", ", ")}</h2>
             <span className="text-placeholder mb-3 d-block">
               <FaLocationDot className="icon" /> 
-              <small className="ms-1">{data.address}</small>
+              <small className="ms-1">{data.city.name}, {data.address}</small>
             </span>
             <span className="text-placeholder mb-3 d-block">
               <IoIosExpand className="icon" /> 
@@ -175,6 +175,7 @@ const HousePage = (props: {
                                 imageURL: property.image,
                                 roomsQuantity: property.bedrooms,
                                 zipCode: property.zip_code,
+                                city: property.city,
                                 onClick: () => handlePropertyCardClick(property)
                               }}
                               className="w-100"

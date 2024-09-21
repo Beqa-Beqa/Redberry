@@ -87,6 +87,7 @@ declare interface PropertyCard {
   roomsQuantity: number,
   imageURL: any,
   zipCode: string,
+  city: City,
   onClick?: () => void
 }
 

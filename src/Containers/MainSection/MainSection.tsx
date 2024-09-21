@@ -80,7 +80,8 @@ const MainSection = (props: {
                       address: property.address,
                       roomsQuantity: property.bedrooms,
                       zipCode: property.zip_code,
-                      imageURL: property.image
+                      imageURL: property.image,
+                      city: property.city
                     }}
                     className="w-25"
                   />
